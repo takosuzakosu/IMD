@@ -30,7 +30,7 @@ class FaceIdentificationService : Service()
 
         //1．通知領域タップで戻ってくる先のActivity
         val openIntent = Intent(this, MainActivity::class.java).let {
-            PendingIntent.getActivity(this, 0, it, 0)
+            PendingIntent.getActivity(this, 0, it,PendingIntent.FLAG_MUTABLE)
         }
 
         //2．通知チャネル登録
@@ -47,7 +47,7 @@ class FaceIdentificationService : Service()
         val sendIntent = Intent(this, FaceIdentificationReceiver::class.java).apply {
             action = Intent.ACTION_SEND
         }
-        val sendPendingIntent = PendingIntent.getBroadcast(this, 0, sendIntent, 0)
+        val sendPendingIntent = PendingIntent.getBroadcast(this, 0, sendIntent, PendingIntent.FLAG_MUTABLE)
         //4．通知の作成（ここでPendingIntentを通知領域に渡す）
         val notification = NotificationCompat.Builder(this, CHANNEL_ID )
             .setSmallIcon(R.drawable.ic_launcher_foreground)

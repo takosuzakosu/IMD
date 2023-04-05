@@ -25,6 +25,12 @@
             android:enabled="true"
             android:exported="false">
         </service>
+        <receiver android:name=".FaceIdentificationReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.imd.IMD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>

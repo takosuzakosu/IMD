@@ -26,16 +26,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         {
             R.id.start_button ->
             {
-                Log.d("MainActivity","Start")
+                Log.i("MainActivity","Start")
                 // Intentオブジェクト
                 val intent = Intent(this@MainActivity,
                     FaceIdentificationService::class.java)
                 // サービスの起動
-                startService(intent)
+                startForegroundService(intent)
             }
             R.id.stop_button ->
             {
-                Log.d("MainActivity","Stop")
+                Log.i("MainActivity","Stop")
                 // Intentオブジェクト
                 val intent = Intent(this@MainActivity,
                     FaceIdentificationService::class.java)

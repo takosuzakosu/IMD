@@ -7,9 +7,26 @@ import android.os.IBinder
 
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import java.util.*
+
 
 class FaceIdentificationService : Service()
 {
+    class FaceIdentificationTask : TimerTask()
+    {
+        override fun run()
+        {
+            //フォアグラウンド実行中の処理
+            println("hello")
+        }
+    }
+
+    private val timer = Timer()
+    private val timerTask = FaceIdentificationTask()
+    // scheduleAtFixedRateメソッドの引数
+    private val delay: Long= 0L
+    private val long: Long = 5000L
+
     companion object
     {
         const val CHANNEL_ID = "1111"
@@ -26,7 +43,9 @@ class FaceIdentificationService : Service()
     // -> サービスの強制終了時の処理を表すServiceクラス定数を返却
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
     {
-        Log.i("Service","onStartCommand called")
+        Log.i("FaceIdentificationService","onStartCommand called")
+
+        timer.scheduleAtFixedRate(timerTask, delay, long)
 
         //1．通知領域タップで戻ってくる先のActivity
         val openIntent = Intent(this, MainActivity::class.java).let {
@@ -35,7 +54,7 @@ class FaceIdentificationService : Service()
 
         //2．通知チャネル登録
         val channelId = CHANNEL_ID
-        val channelName = "TestService Channel"
+        val channelName = "IMDService Channel"
         val channel = NotificationChannel(
             channelId, channelName,
             NotificationManager.IMPORTANCE_DEFAULT
@@ -51,7 +70,7 @@ class FaceIdentificationService : Service()
         //4．通知の作成（ここでPendingIntentを通知領域に渡す）
         val notification = NotificationCompat.Builder(this, CHANNEL_ID )
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("フォアグラウンドのテスト中")
+            .setContentTitle("IMD実行中")
             .setContentText("終了する場合はこちらから行って下さい。")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openIntent)
@@ -60,8 +79,6 @@ class FaceIdentificationService : Service()
 
         //5．フォアグラウンド開始。
         startForeground(2222, notification)
-
-        Log.d("FaceIdentificationService","Running")
 
         return START_STICKY
     }
@@ -73,12 +90,14 @@ class FaceIdentificationService : Service()
     // サービスの初期化時に実行する処理
     override fun onCreate()
     {
-        Log.d("FaceIdentificationService","Create")
+        Log.i("FaceIdentificationService","Create")
     }
 
     // サービスの終了時に実行する処理
     override fun onDestroy()
     {
-        Log.d("FaceIdentificationService","Destroy")
+        Log.i("FaceIdentificationService","Destroy")
+        timer.cancel()
     }
+
 }

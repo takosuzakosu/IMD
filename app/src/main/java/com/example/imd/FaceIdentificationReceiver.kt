@@ -9,7 +9,7 @@ class FaceIdentificationReceiver : BroadcastReceiver()
 {
     override fun onReceive(context: Context, intent: Intent)
     {
-        Log.d("FaceIdentificationReceiver","Stop")
+        Log.i("FaceIdentificationReceiver","Stop")
         // Intentオブジェクト
         val targetIntent = Intent(context, FaceIdentificationService::class.java)
         // サービスの停止
